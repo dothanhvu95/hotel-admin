@@ -30,6 +30,7 @@ Route::group(["prefix"=>"admin",'middleware'=>'isadmin'],function(){
        
         Route::get('/', 'Admin\HotelController@listHotel');
         Route::get('/create', 'Admin\HotelController@createHotelView');
+        Route::post('/create-hotel', 'Admin\HotelController@createHotel');
     });
 
     Route::group(["prefix"=>"booking"],function(){

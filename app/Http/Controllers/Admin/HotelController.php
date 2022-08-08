@@ -12,4 +12,8 @@ class HotelController extends Controller
         return view('Hotel.list-hotel');
     }
     
+    public function createHotelView()
+    {
+        return view('Hotel.create-view');
+    }
 }

@@ -60,7 +60,16 @@
                 </tr>
                 @endforeach
                 @endif
+                
+                                        
             </table>
+            <section class="panel">
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li> {!! $users->render() !!}</li>
+                    </ul>
+                </div>
+            </section>                        
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>

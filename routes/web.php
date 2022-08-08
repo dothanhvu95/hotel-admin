@@ -17,7 +17,7 @@ Route::get('logout',function(){
                 Auth::logout();
                 return Redirect::to('/login');
             });
-Route::group(["prefix"=>"admin"],function(){
+Route::group(["prefix"=>"admin",'middleware'=>'isadmin'],function(){
 
     Route::get('/dashboard', 'Admin\DashboardController@dashboard');
 
@@ -29,6 +29,7 @@ Route::group(["prefix"=>"admin"],function(){
     Route::group(["prefix"=>"hotel"],function(){
        
         Route::get('/', 'Admin\HotelController@listHotel');
+        Route::get('/create', 'Admin\HotelController@createHotelView');
     });
 
     Route::group(["prefix"=>"booking"],function(){

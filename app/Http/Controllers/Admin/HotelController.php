@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Model\City;
 use App\Model\District;
 use App\Model\Ward;
 use App\Model\Hotel;
 use App\Model\HotelDetail;
 use App\Model\HotelFacility;
+use App\Model\HotelImage;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class HotelController extends Controller
 {
@@ -44,6 +48,8 @@ class HotelController extends Controller
             "city_id" => "required",
             "district_id" => "required",
             "ward_id" => "required",
+            'stock' => 'required',
+            'sqft' => 'nullable',
             "is_recommand" => "nullable",
             "is_popular" => "nullable",
             "is_trending" => "nullable",
@@ -60,7 +66,8 @@ class HotelController extends Controller
             "have_elevator" => "nullable",
             "have_fitness_center" => "nullable",
             "have_open" => "nullable",
-            'images' => 'required'
+            'images' => 'required',
+            'images.*' => 'required'
 
 
         ],[
@@ -70,23 +77,48 @@ class HotelController extends Controller
         if($validater->fails()){
             return redirect()->back()->withErrors($validater)->withInput();
         }else{
-            dd($request->all());
-            $dataHotel = $request->only('name','address','price','description','city_id','district_id','ward_id','is_recommand','is_popular','is_trending');
-            $createHotel = Hotel::create($dataHotel);
+
+            DB::transaction(function () use ($request) {
+                $dataHotel = $request->only('name','address','price','description','city_id','district_id','ward_id','is_recommand','is_popular','is_trending','stock');
+                $createHotel = Hotel::create($dataHotel);
 
 
-            $dataHotelDetail = $request->only('four_bedrooms','one_bedrooms','two_bedrooms','is_hotel','two_bathrooms');
-            $dataHotelDetail['hotel_id'] = $createHotel->id;
+                $dataHotelDetail = $request->only('four_bedrooms','one_bedrooms','two_bedrooms','is_hotel','two_bathrooms','sqft');
+                $dataHotelDetail['hotel_id'] = $createHotel->id;
 
-            HotelDetail::create($dataHotelDetail);
+                HotelDetail::create($dataHotelDetail);
 
-            $dataHotelFacility = $request->only('have_swimming','have_wifi','have_restaurant','have_parking','have_meeting_room','have_elevator','have_fitness_center','have_open');
-            $dataHotelFacility['hotel_id'] = $createHotel->id; 
+                $dataHotelFacility = $request->only('have_swimming','have_wifi','have_restaurant','have_parking','have_meeting_room','have_elevator','have_fitness_center','have_open');
+                $dataHotelFacility['hotel_id'] = $createHotel->id; 
 
-            HotelFacility::create($dataHotelFacility);
-           dd($request->all());    
-                
-                
+                HotelFacility::create($dataHotelFacility);
+
+                $hid = $createHotel->id;
+                $dir = $hid % 1000;
+                $filepath = 'hotels/'.$dir.'/'.$hid;
+                if ($request->hasfile('images')) {
+                    foreach ($request->file('images') as $image) {
+
+                        $prefix = $hid . '_'
+                            . Carbon::now()->format('Ymdhis') . '_'
+                            . Str::random(8);
+
+                        $result = $this->upload_images($image, $filepath, $prefix, config('image.size.hotel_images'));
+
+                        $hotelPicture = new HotelImage();
+                        $hotelPicture->hotel_id = $hid;
+                        $hotelPicture->label = '';
+                        $hotelPicture->small = $result['small'];
+                        $hotelPicture->medium = $result['medium'];
+                        $hotelPicture->large = $result['large'];
+                        $hotelPicture->fhd = $result['fhd'];
+                        $hotelPicture->original = $result['original'];
+                        $hotelPicture->save();
+                    }
+                }
+            });
+            $request->session()->flash("success","Create a hotel successfully!" );
+            return redirect()->back();    
         }
     }
 }

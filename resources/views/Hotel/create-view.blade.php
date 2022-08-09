@@ -8,7 +8,15 @@
           Horizontal Forms
       </header>
       <div class="panel-body">
-          <form class="form-horizontal" role="form" action="/admin/hotel/create-hotel" method="post">
+      	@if(session('success'))
+      	<div class="alert alert-success ">
+	          <button data-dismiss="alert" class="close close-sm" type="button">
+	              <i class="fa fa-times"></i>
+	          </button>
+	          <strong>Well done!</strong>{{session('success')}}
+	      </div>
+	      @endif
+          <form class="form-horizontal" enctype="multipart/form-data" role="form" action="/admin/hotel/create-hotel" method="post" >
               	<div class="form-group">
                   	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">Hotel Name</label>
                   	<div class="col-lg-8">
@@ -31,6 +39,38 @@
                       	<input type="text" name='address' class="form-control" id="inputEmail1" placeholder="address">
                       	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
                   	</div>
+              	</div>
+              	<div class="form-group">
+                  	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">Stock, Sqft</label>
+                  	<div class="col-lg-2">
+                      	<select class="form-control m-b-3" name="stock">
+                              <option value="" >Choose Stock</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>	
+                          </select>
+                          
+                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                  	</div>
+                  	<div class="col-lg-2">
+                      	<select class="form-control m-b-3" name="sqft">
+                              <option value="" >Choose sqft</option>
+                              <option value="10">10</option>
+                              <option value="15">15</option>
+                              <option value="20">20</option>
+                              <option value="25">25</option>
+                              <option value="30">30</option>	
+                              <option value="35">35</option>	
+                              <option value="40">40</option>	
+                              <option value="45">45</option>	
+                              <option value="50">50</option>	
+                          </select>
+                          
+                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                  	</div>
+                  	
               	</div>
               	<div class="form-group">
                   	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">City,District,Ward.</label>

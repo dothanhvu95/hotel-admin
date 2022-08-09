@@ -95,7 +95,7 @@ class Controller extends BaseController
 
         if (!empty($sizes)) {
             foreach ($sizes as $key => $size) {
-                $hasResized = resize_image($image, $size['width'], $size['height']);
+                $hasResized = $this->resize_image($image, $size['width'], $size['height']);
 
                 if (!$hasResized) {
                     $result[$key] = null;
@@ -115,7 +115,7 @@ class Controller extends BaseController
 
         return $result;
     }
-}
+
 
     /**
      * Resize images.

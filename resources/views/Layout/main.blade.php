@@ -2,7 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Director | Dashboard</title>
+    @if(!empty($title))
+        <title>{{$title}}</title>
+    @else
+        <title>Admin</title>
+    @endif
+    <!-- <title>Director | Dashboard</title> -->
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="description" content="Developed By M Abdur Rokib Promy">
     <meta name="keywords" content="Admin, Bootstrap 3, Template, Theme, Responsive">

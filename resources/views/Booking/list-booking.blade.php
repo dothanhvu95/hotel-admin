@@ -24,39 +24,57 @@
                 <tr>
                     <th>ID</th>
                     <th>User</th>
-                    <th>Date</th>
+                    <th>Hotel</th>
+                    <th>Payment</th>
+                    <th>Code</th>
+                    <th>Total Price</th>
+                    <th>Guest</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
                     <th>Status</th>
-                    <th>Reason</th>
+                    <th>Created_at</th>
+                    <th>Action</th>
                 </tr>
+                @if(count($bookings) > 0)
+                @foreach($bookings as $booking)
                 <tr>
-                    <td>183</td>
-                    <td>John Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-success">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                    <td>{{$booking['id']}}</td>
+                    <td>{{$booking['user']['name']}}</td>
+                    <td>{{$booking['hotel']['name']}}</td>
+                    <td>{{$booking['payment']['name']}}</td>
+                    <td>{{$booking['booking_code']}}</td>
+                    <td>{{number_format($booking['money_total'])}}</td>
+                    <td>{{$booking['guest']}}</td>
+                    <td>{{$booking['check_in']}}</td>
+                    <td>{{$booking['check_out']}}</td>
+                    <td>
+                        @if($booking['status'] ==1)
+                            <span class="label label-success">On going</span></td>
+                        @elseif($booking['status'] ==2)
+                            <span class="label label-primary">Completed</span></td>
+                        @else
+                            <span class="label label-danger">Cancelled</span></td>
+                        @endif
+                    <td>{{$booking['created_at']}}</td>
+                    <td>
+                        <div class="pull-center hidden-phone">
+                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
+                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
+                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
+                        </div>
+                    </td>
                 </tr>
-                <tr>
-                    <td>219</td>
-                    <td>Jane Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-warning">Pending</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>657</td>
-                    <td>Bob Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-primary">Approved</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
-                <tr>
-                    <td>175</td>
-                    <td>Mike Doe</td>
-                    <td>11-7-2014</td>
-                    <td><span class="label label-danger">Denied</span></td>
-                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                </tr>
+                
+                @endforeach
+                @endif
             </table>
+            <section class="panel">
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li> {!! $bookings->render() !!}</li>
+                    </ul>
+                </div>
+            </section>
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>

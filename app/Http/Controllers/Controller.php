@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Exception\NotReadableException;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
+use Aws\S3\Exception\S3Exception;
 
 class Controller extends BaseController
 {

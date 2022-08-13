@@ -2,16 +2,15 @@
 @section('dashboard')
 <!-- Main content -->
 <section class="content">
-
     <div class="row" style="margin-bottom:5px;">
-
-
         <div class="col-md-3">
             <div class="sm-st clearfix">
                 <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
                 <div class="sm-st-info">
-                    <span>3200</span>
-                    Total Tasks
+                    <span>
+                        {{$totalUser}}
+                    </span>
+                    Total Users
                 </div>
             </div>
         </div>
@@ -19,26 +18,26 @@
             <div class="sm-st clearfix">
                 <span class="sm-st-icon st-violet"><i class="fa fa-envelope-o"></i></span>
                 <div class="sm-st-info">
-                    <span>2200</span>
-                    Total Messages
+                    <span>{{$totalHotel}}</span>
+                    Total Hotels
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="sm-st clearfix">
-                <span class="sm-st-icon st-blue"><i class="fa fa-dollar"></i></span>
+                <span class="sm-st-icon st-blue"><i class="fa fa-paperclip "></i></span>
                 <div class="sm-st-info">
-                    <span>100,320</span>
-                    Total Profit
+                    <span>{{$totalBooking}}</span>
+                    Total Booking
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="sm-st clearfix">
-                <span class="sm-st-icon st-green"><i class="fa fa-paperclip"></i></span>
+                <span class="sm-st-icon st-green"><i class="fa fa-dollar"></i></span>
                 <div class="sm-st-info">
-                    <span>4567</span>
-                    Total Documents
+                    <span>{{number_format($turnover)}}</span>
+                    Total Turnover
                 </div>
             </div>
         </div>

@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function listUser()
     {
-        $users = User::orderby('id','desc')->paginate(2);
+        $users = User::orderby('id','desc')->paginate(20);
         return view('User.list-user',['users'=>$users]);
     }
     

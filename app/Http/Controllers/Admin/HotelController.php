@@ -20,11 +20,16 @@ class HotelController extends Controller
 {
     public function listHotel()
     {
-        return view('Hotel.list-hotel');
+        $titlePage = 'Admin | Management Hotel';
+        $hotels = Hotel::with('city','district','ward')->orderby('updated_at','desc')->paginate(20);
+        // dd($hotels);
+        return view('Hotel.list-hotel',['hotels'=> $hotels,'title' => $titlePage]);
     }
     
     public function createHotelView()
     {
+        $titlePage = 'Admin | Create a Hotel';
+
         $cities = City::pluck('desc','id')->all();
         $districts = District::pluck('name','id')->all();
         $wards = Ward::pluck('name','id')->all();
@@ -32,7 +37,8 @@ class HotelController extends Controller
         $data = [
                     'cities' => $cities,
                     'districts' => $districts,
-                    'wards' => $wards
+                    'wards' => $wards,
+                    'title' => $titlePage
                 ];
         return view('Hotel.create-view', $data);
     }

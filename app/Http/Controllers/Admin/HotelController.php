@@ -49,11 +49,11 @@ class HotelController extends Controller
         $validater=Validator::make($request->all(),[
             "name" => "required",
             "address" => "required",
-            "price" => "required",
+            "price" => "required|numeric",
             "description" => "required",
-            "city_id" => "required",
-            "district_id" => "required",
-            "ward_id" => "required",
+            "city_id" => "required|numeric",
+            "district_id" => "required|numeric",
+            "ward_id" => "required|numeric",
             'stock' => 'required',
             'sqft' => 'nullable',
             "is_recommand" => "nullable",
@@ -73,17 +73,12 @@ class HotelController extends Controller
             "have_fitness_center" => "nullable",
             "have_open" => "nullable",
             'images' => 'required',
-            'images.*' => 'required'
 
-
-        ],[
-            "name.required"=>"Vui lòng nhập tên khách sạn.",
         ]);
 
         if($validater->fails()){
             return redirect()->back()->withErrors($validater)->withInput();
         }else{
-
             DB::transaction(function () use ($request) {
                 $dataHotel = $request->only('name','address','price','description','city_id','district_id','ward_id','is_recommand','is_popular','is_trending','stock');
                 $createHotel = Hotel::create($dataHotel);
@@ -127,4 +122,7 @@ class HotelController extends Controller
             return redirect()->back();    
         }
     }
+
+
+
 }

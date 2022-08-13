@@ -12,6 +12,22 @@
 
         <!-- </div> -->
         <div class="panel-body table-responsive">
+            @if(session('success'))
+            <div class="alert alert-success ">
+                  <button data-dismiss="alert" class="close close-sm" type="button">
+                      <i class="fa fa-times"></i>
+                  </button>
+                  <strong>Well done!</strong> {{session('success')}}
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger ">
+                  <button data-dismiss="alert" class="close close-sm" type="button">
+                      <i class="fa fa-times"></i>
+                  </button>
+                  <strong>Warning!</strong> {{session('error')}}
+            </div>
+            @endif
             <div class="box-tools m-b-15">
                 <div class="input-group">
                     <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
@@ -58,9 +74,9 @@
                     <td>{{$booking['created_at']}}</td>
                     <td>
                         <div class="pull-center hidden-phone">
-                              <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
+                            <a href="/admin/booking/change/{{$booking['id']}}?status=completed"class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Completed" id='click_completed' ><i class="fa fa-check"></i></a>
+
+                            <a href="/admin/booking/change/{{$booking['id']}}?status=cancelled"class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Cancelled" id='click_cancelled' ><i class="fa fa-times"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -78,4 +94,31 @@
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>
+@endsection
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function () {
+        // $("#click_completed").click(function(){
+        //     if(confirm("Do you want completed booking ? ")){
+        //         $.get($(this).attr("href"),function(){
+        //             location.reload(true);
+        //         });
+        //         // $(this).parent().parent().remove();
+                
+        //     }
+        //     return false;
+        // });
+
+        // $("#click_cancelled").click(function(){
+        //     if(confirm("Do you want cancelles booking ? ")){
+        //         $.get($(this).attr("href"),function(){
+        //              location.reload(true);
+        //         });
+        //         // $(this).parent().parent().remove();
+                
+        //     }
+        //     return false;
+        // });
+    });
+</script>
 @endsection

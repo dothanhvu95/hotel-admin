@@ -36,6 +36,14 @@ Route::group(["prefix"=>"admin",'middleware'=>'isadmin'],function(){
     Route::group(["prefix"=>"booking"],function(){
        
         Route::get('/', 'Admin\BookingController@listBooking');
+        Route::get('/change/{id}', 'Admin\BookingController@changStatus');
     });
 
+
+});
+ Route::group(["prefix"=>"location"],function(){
+       
+        Route::get('/city', 'Admin\LocationController@getCity');
+        Route::get('/district/{idCity}', 'Admin\LocationController@getDistrict');
+        Route::get('/ward/{idDistrict}', 'Admin\LocationController@getWard');
 });

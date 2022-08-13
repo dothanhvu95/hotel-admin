@@ -5,7 +5,7 @@
 <div class="col-lg-12">
   <section class="panel">
       <header class="panel-heading">
-          Horizontal Forms
+          Create Hotel
       </header>
       <div class="panel-body">
       	@if(session('success'))
@@ -29,15 +29,19 @@
               	<div class="form-group">
                   	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">Price</label>
                   	<div class="col-lg-8">
-                      	<input type="text" name='price' class="form-control" id="inputEmail1" placeholder="amout">
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	<input type="text" name='price' value="" class="form-control" id="formattedNumberField" placeholder="Price">
+                      	@if($errors->has('price') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("price")}}</p>
+                      	@endif
                   	</div>
               	</div>
               	<div class="form-group">
                   	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">Address hotel</label>
                   	<div class="col-lg-8">
-                      	<input type="text" name='address' class="form-control" id="inputEmail1" placeholder="address">
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	<input type="text" name='address' class="form-control" id="inputEmail1" placeholder="Address">
+                      	@if($errors->has('address') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("address")}}</p>
+                      	@endif
                   	</div>
               	</div>
               	<div class="form-group">
@@ -51,8 +55,9 @@
                               <option value="4">4</option>
                               <option value="5">5</option>	
                           </select>
-                          
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                        @if($errors->has('stock') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("stock")}}</p>
+                      	@endif
                   	</div>
                   	<div class="col-lg-2">
                       	<select class="form-control m-b-3" name="sqft">
@@ -68,7 +73,9 @@
                               <option value="50">50</option>	
                           </select>
                           
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	 @if($errors->has('sqft') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("sqft")}}</p>
+                      	@endif
                   	</div>
                   	
               	</div>
@@ -84,31 +91,29 @@
                               @endif
                           </select>
                           
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	 @if($errors->has('city_id') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("city_id")}}</p>
+                      	@endif
                   	</div>
                   	<div class="col-lg-2">
                       	<select class="form-control m-b-3" name="district_id">
                               <option value="">Choose District</option>
-                              @if(count($districts) > 0)
-                              	@foreach($districts as $k => $v)
-                              		<option value="{{$k}}">{{$v}}</option>
-                              	@endforeach
-                              @endif
+                              
                           </select>
                           
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	 @if($errors->has('district_id') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("district_id")}}</p>
+                      	@endif
                   	</div>
                   	<div class="col-lg-2">
                       	<select class="form-control m-b-3" name="ward_id">
                               <option value="">Choose Ward</option>
-                              @if(count($wards) > 0)
-                              	@foreach($wards as $k => $v)
-                              		<option value="{{$k}}">{{$v}}</option>
-                              	@endforeach
-                              @endif
+                             
                           </select>
                           
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	 @if($errors->has('ward_id') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("ward_id")}}</p>
+                      	@endif
                   	</div>
               	</div>
 
@@ -179,7 +184,9 @@
                   	<label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">Pictures</label>
                   	<div class="col-lg-3">
                       	<input type="file" name='images[]' class="form-control" id="inputEmail1" multiple>
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	@if($errors->has('images') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("images")}}</p>
+                      	@endif
                   	</div>
               	</div>
               	<div class="form-group">
@@ -187,17 +194,63 @@
                   	<div class="col-lg-8">
                       	<textarea name='description' class="form-control" id="inputEmail1" placeholder="Description hotel">
                       	</textarea>
-                      	<!-- <p class="help-block" style='color:red'>Example block-level help text here.</p> -->
+                      	 @if($errors->has('description') )
+                      		<p class="help-block" style='color:red'>{{$errors->first("description")}}</p>
+                      	@endif
                   	</div>
               	</div>
               	<input type="hidden" name="_token" value="{{ csrf_token() }}" class="form-control" />
               	<div class="form-group">
                   	<div class="col-lg-offset-2 col-lg-10">
-                      	<button type="submit" class="btn btn-danger">Create</button>
+                      	<button type="submit" id='overdue' class="btn btn-danger">Create</button>
                   	</div>
               	</div>
           	</form>
       	</div>
   	</section>
 	</div>
+	
+@endsection
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function () {
+   	
+    $("select[name='city_id']").change(function(){
+        var city_id = $(this).val();
+        
+        $.ajax({
+            url: "{{ url('/location/district/') }}"+'/'+city_id,
+            method: 'GET',
+            
+            success: function(data) {
+                $("select[name='district_id'").html('');
+                $.each(data, function(key, value){
+                    $("select[name='district_id']").append(
+                      "<option value=" + value.code + ">" + value.name + "</option>"
+                    );
+                });
+            }
+        });
+    }); 
+
+    $("select[name='district_id']").change(function(){
+        var district_id = $(this).val();
+        
+        $.ajax({
+            url: "{{ url('/location/ward/') }}"+'/'+district_id,
+            method: 'GET',
+            
+            success: function(data) {
+                $("select[name='ward_id'").html('');
+                $.each(data, function(key, value){
+                    $("select[name='ward_id']").append(
+                      "<option value=" + value.id + ">" + value.name + "</option>"
+                    );
+                });
+            }
+        });
+    });    
+    
+	});
+</script>
 @endsection

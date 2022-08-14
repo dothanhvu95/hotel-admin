@@ -31,12 +31,14 @@ Route::group(["prefix"=>"admin",'middleware'=>'isadmin'],function(){
         Route::get('/', 'Admin\HotelController@listHotel');
         Route::get('/create', 'Admin\HotelController@createHotelView');
         Route::post('/create-hotel', 'Admin\HotelController@createHotel');
+
+        Route::get('/change/{id}','Admin\HotelController@changeStatusHotel');
     });
 
     Route::group(["prefix"=>"booking"],function(){
        
         Route::get('/', 'Admin\BookingController@listBooking');
-        Route::get('/change/{id}', 'Admin\BookingController@changStatus');
+        Route::get('/change/{id}', 'Admin\BookingController@changStatusBooking');
     });
 
 

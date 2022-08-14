@@ -18,10 +18,16 @@ use Illuminate\Support\Str;
 
 class HotelController extends Controller
 {
-    public function listHotel()
+    public function listHotel(Request $request)
     {
         $titlePage = 'Admin | Management Hotel';
-        $hotels = Hotel::with('city','district','ward')->orderby('updated_at','desc')->paginate(20);
+        $hotels = Hotel::with('city','district','ward')
+            ->when($request->keyword, function ($query, $keyword) {
+                        
+                return $query->where('name','LIKE',"%".$keyword."%"); 
+                        
+            })
+            ->orderby('updated_at','desc')->paginate(20);
         // dd($hotels);
         return view('Hotel.list-hotel',['hotels'=> $hotels,'title' => $titlePage]);
     }
@@ -120,6 +126,39 @@ class HotelController extends Controller
             });
             $request->session()->flash("success","Create a hotel successfully!" );
             return redirect()->back();    
+        }
+    }
+
+
+
+    public function changeStatusHotel(Request $request, $idHotel)
+    {
+        $hotel = Hotel::find($idHotel);
+
+        if($request->status ==='deactive')
+        {
+            if ($hotel->status === 1) {
+               $hotel->status = 3;
+               $hotel->save();
+            }else{
+                $request->session()->flash("error","Can not deactive Hotel!" );
+                return redirect()->back();
+            }
+            $request->session()->flash("success","Deactive Hotel successfully!" );
+            return redirect()->back();
+        }
+
+        if($request->status ==='active')
+        {
+            if ($hotel->status === 3) {
+               $hotel->status = 1;
+               $hotel->save();
+            }else{
+                $request->session()->flash("error","Can not active Hotel!" );
+                return redirect()->back();
+            }
+            $request->session()->flash("success","Active Hotel successfully!" );
+            return redirect()->back();
         }
     }
 

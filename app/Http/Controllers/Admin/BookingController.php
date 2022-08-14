@@ -8,11 +8,16 @@ use App\Model\Booking;
 
 class BookingController extends Controller
 {
-    public function listBooking()
+    public function listBooking(Request $request)
     {   
         $titlePage = 'Admin | Management Booking';
 
-        $bookings = Booking::with(['user','hotel','payment'])->orderby('id','desc')->paginate(20);
+        $bookings = Booking::with(['user','hotel','payment'])
+            ->when($request->keyword, function ($query, $keyword) {
+                    
+                    return $query->where('booking_code','LIKE',"%".$keyword."%"); 
+                    
+            })->orderby('updated_at','desc')->paginate(20);
 
         $data = [
             'title' => $titlePage,
@@ -21,7 +26,7 @@ class BookingController extends Controller
         return view('Booking.list-booking', $data);
     }
 
-    public function changStatus(Request $request, $idBooking)
+    public function changStatusBooking(Request $request, $idBooking)
     {
         $booking = Booking::find($idBooking);
 

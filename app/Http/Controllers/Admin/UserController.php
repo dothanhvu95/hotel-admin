@@ -8,9 +8,15 @@ use App\Model\User;
 
 class UserController extends Controller
 {
-    public function listUser()
+    public function listUser(Request $request)
     {
-        $users = User::orderby('id','desc')->paginate(20);
+        $titlePage = 'Admin | Management User';
+        $users = User::when($request->keyword, function ($query, $keyword) {
+                        
+                return $query->where('email','LIKE',"%".$keyword."%")
+                            ->orWhere('phone','LIKE',"%".$keyword."%"); 
+                        
+            })->orderby('updated_at','desc')->paginate(20);
         return view('User.list-user',['users'=>$users]);
     }
     

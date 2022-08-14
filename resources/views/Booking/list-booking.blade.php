@@ -29,12 +29,16 @@
             </div>
             @endif
             <div class="box-tools m-b-15">
-                <div class="input-group">
-                    <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
-                    <div class="input-group-btn">
-                        <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                <form method="GET" action="/admin/booking">
+                    <div class="input-group">
+                    
+                        <input type="text" name="keyword" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search booking code"/>
+                        <div class="input-group-btn">
+                            <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
                     </div>
-                </div>
+                </form>
+                
             </div>
             <table class="table table-hover">
                 <tr>
@@ -74,13 +78,51 @@
                     <td>{{$booking['created_at']}}</td>
                     <td>
                         <div class="pull-center hidden-phone">
-                            <a href="/admin/booking/change/{{$booking['id']}}?status=completed"class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Completed" id='click_completed' ><i class="fa fa-check"></i></a>
+                            <a data-toggle="modal" href="#myModalComplete" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Completed" id='click_completed' ><i class="fa fa-check"></i></a>
 
-                            <a href="/admin/booking/change/{{$booking['id']}}?status=cancelled"class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Cancelled" id='click_cancelled' ><i class="fa fa-times"></i></a>
+                            <a data-toggle='modal' href="#myModalCancel" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Cancelled" id='click_cancelled' ><i class="fa fa-times"></i></a>
                         </div>
                     </td>
                 </tr>
-                
+                <div class="modal fade" id="myModalComplete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Completed booking</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                Are you sure complete booking???
+
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                <a href="/admin/booking/change/{{$booking['id']}}?status=completed" class="btn btn-success" >Completed</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModalCancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Cancelled booking</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                Are you sure Cancelled booking???
+
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                                <a  href="/admin/booking/change/{{$booking['id']}}?status=cancelled" class="btn btn-danger" >Cancelled</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
                 @endforeach
                 @endif
             </table>
@@ -91,34 +133,17 @@
                     </ul>
                 </div>
             </section>
+
+
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>
+
 @endsection
 @section('script')
 <script type="text/javascript">
     $(document).ready(function () {
-        // $("#click_completed").click(function(){
-        //     if(confirm("Do you want completed booking ? ")){
-        //         $.get($(this).attr("href"),function(){
-        //             location.reload(true);
-        //         });
-        //         // $(this).parent().parent().remove();
-                
-        //     }
-        //     return false;
-        // });
-
-        // $("#click_cancelled").click(function(){
-        //     if(confirm("Do you want cancelles booking ? ")){
-        //         $.get($(this).attr("href"),function(){
-        //              location.reload(true);
-        //         });
-        //         // $(this).parent().parent().remove();
-                
-        //     }
-        //     return false;
-        // });
+        
     });
 </script>
 @endsection
